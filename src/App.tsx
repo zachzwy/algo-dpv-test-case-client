@@ -15,12 +15,12 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import "./App.css";
 import { useEffect } from "react";
 
-const endpoint = true
-  ? "https://algo-dpv-test-case-server.herokuapp.com"
-  : "http://localhost:8080";
+const endpoint =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:8080"
+    : "https://algo-dpv-test-case-server.herokuapp.com";
 
 function App() {
   const [results, setResults] = useState<
@@ -75,7 +75,6 @@ function App() {
     });
     setIsFetching(false);
     const res = processRes(resp.data);
-    console.log(res);
     setResults(res);
 
     if (Array.isArray(res)) {
