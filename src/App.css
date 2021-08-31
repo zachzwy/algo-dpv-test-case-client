@@ -22,6 +22,21 @@ textarea {
   margin: 10px 0 10px;
 }
 
-.MuiListItem-root {
+.result .MuiListItem-root {
   padding-left: 0px !important;
+}
+
+.result .MuiListItemIcon-root {
+  min-width: 35px;
+}
+
+.result .MuiListItemText-primary {
+  word-break: break-word;
+}
+
+.selector {
+  min-width: 150px !important;
+  max-width: 150px !important;
+  margin-right: 20px !important;
+  margin-bottom: 10px !important;
 }
