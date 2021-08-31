@@ -6,6 +6,8 @@ Tech stack: React, MaterialUI, Heroku.
 
 ### Areas to improve/contribute:
 
+- Input validation
+- Bot detection - e.g Google reCAPTCHA
 - Syntax highter - e.g. use vscode lib
 - UI improvement - debug statement display
 
