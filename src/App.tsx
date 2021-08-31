@@ -17,10 +17,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { useEffect } from "react";
 
-const endpoint =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:8080"
-    : "https://algo-dpv-test-case-server.herokuapp.com";
+const endpoint = "https://algo-dpv-test-case-server.herokuapp.com"; // "http://localhost:8080"
 
 function App() {
   const [results, setResults] = useState<
