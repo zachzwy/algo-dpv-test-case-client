@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import MonacoEditor from "react-monaco-editor";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
@@ -8,6 +7,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import ResultDisplay from "./ResultDisplay";
+import Editor from "@monaco-editor/react";
 import { endpoint } from "../utils";
 import { Result, Data, Event, AvailableProblems } from "../types";
 
@@ -140,15 +140,14 @@ function App() {
           </MenuItem>
         </Select>
       </FormControl>
-      <MonacoEditor
-        width="600"
-        height="600"
-        language="python"
+      <Editor
+        width="600px"
+        height="600px"
+        theme="vs-dark"
+        defaultLanguage="python"
+        defaultValue="// some comment"
+        onChange={(val, e) => setCode(val as string)}
         value={code}
-        options={{
-          theme: "vs-dark",
-        }}
-        onChange={setCode}
       />
       <div className="submit">
         <Button
