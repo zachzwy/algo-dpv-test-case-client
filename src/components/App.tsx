@@ -11,6 +11,12 @@ import ResultDisplay from "./ResultDisplay";
 import { endpoint } from "../utils";
 import { Result, Data, Event, AvailableProblems } from "../types";
 
+declare global {
+  interface Window {
+    grecaptcha: any;
+  }
+}
+
 function App() {
   const [results, setResults] = useState<Result>("");
   const [availableProlems, setAvailableProblems] = useState<AvailableProblems>(
@@ -51,21 +57,34 @@ function App() {
   const onSubmit = async () => {
     setResults("");
     setIsFetching(true);
-    const resp = await axios.get(`${endpoint}/submit`, {
-      params: {
-        code,
-        problem: selectedProblem,
-        language: selectedLanguage,
-      },
-    });
-    setIsFetching(false);
-    const res = processRes(resp.data);
-    setResults(res);
 
-    if (Array.isArray(res)) {
-      setTotal(res.length);
-      setPass(res.filter((_) => _.isPass).length);
-    }
+    // e.preventDefault();
+    const grecaptcha = window.grecaptcha || {};
+    grecaptcha.ready(async () => {
+      const token = await grecaptcha.execute(
+        "6Le_IzocAAAAAL-1l89cC4FVAL_1WjPwForerHoW",
+        {
+          action: "submit",
+        }
+      );
+
+      const resp = await axios.get(`${endpoint}/submit`, {
+        params: {
+          code,
+          problem: selectedProblem,
+          language: selectedLanguage,
+          token,
+        },
+      });
+      setIsFetching(false);
+      const res = processRes(resp.data);
+      setResults(res);
+
+      if (Array.isArray(res)) {
+        setTotal(res.length);
+        setPass(res.filter((_) => _.isPass).length);
+      }
+    });
   };
 
   const handleProblemChange = (e: Event) => {
