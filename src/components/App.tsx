@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import MonacoEditor from "react-monaco-editor";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
@@ -140,13 +140,15 @@ function App() {
           </MenuItem>
         </Select>
       </FormControl>
-      <TextareaAutosize
+      <MonacoEditor
+        width="600"
+        height="600"
+        language="python"
         value={code}
-        onChange={(e) => setCode(e.target.value)}
-        minRows={30}
-        maxRows={30}
-        aria-label="maximum height"
-        placeholder="Maximum 4 rows"
+        options={{
+          theme: "vs-dark",
+        }}
+        onChange={setCode}
       />
       <div className="submit">
         <Button

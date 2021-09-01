@@ -16,12 +16,7 @@ body {
 }
 
 .App {
-  width: 500px;
-}
-
-textarea {
-  width: 100%;
-  resize: none;
+  width: 600px;
 }
 
 .pass-icon {
