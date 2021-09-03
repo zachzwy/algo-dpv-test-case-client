@@ -32,7 +32,7 @@ function App() {
   );
 
   const isResult = (str: string) =>
-    str.substring(0, 3) === "@#$" && str.substring(str.length - 3) === "@#$";
+    str.substring(0, 3) === "@#@" && str.substring(str.length - 3) === "@#@";
 
   const processRes = (data: Data) => {
     if (typeof data === "string") return data;
@@ -114,11 +114,13 @@ function App() {
       <FormControl className="selector">
         <InputLabel id="demo-simple-select-label">Problem</InputLabel>
         <Select value={selectedProblem} onChange={handleProblemChange}>
-          {Object.keys(availableProlems).map((key, i) => (
-            <MenuItem key={i} value={key}>
-              {availableProlems[key].title}
-            </MenuItem>
-          ))}
+          {Object.keys(availableProlems)
+            .sort((a, b) => Number(a.split("-")[1]) - Number(b.split("-")[1]))
+            .map((key, i) => (
+              <MenuItem key={i} value={key}>
+                {availableProlems[key].title}
+              </MenuItem>
+            ))}
         </Select>
       </FormControl>
       <FormControl className="selector">
@@ -141,7 +143,7 @@ function App() {
         </Select>
       </FormControl>
       <Editor
-        width="600px"
+        width="700px"
         height="600px"
         theme="vs-dark"
         defaultLanguage="python"
