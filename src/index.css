@@ -53,3 +53,8 @@ body {
   margin-right: 20px !important;
   margin-bottom: 10px !important;
 }
+
+.selector-progress {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}

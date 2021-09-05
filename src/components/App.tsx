@@ -24,7 +24,8 @@ function App() {
   );
   const [selectedProblem, setSelectedProblem] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("");
-  const [isFetching, setIsFetching] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isFetchingProblems, setIsFetchingProblems] = useState(true);
   const [pass, setPass] = useState(0);
   const [total, setTotal] = useState(0);
   const [code, setCode] = useState(
@@ -56,7 +57,7 @@ function App() {
 
   const onSubmit = async () => {
     setResults("");
-    setIsFetching(true);
+    setIsSubmitting(true);
 
     // e.preventDefault();
     const grecaptcha = window.grecaptcha || {};
@@ -76,7 +77,7 @@ function App() {
           token,
         },
       });
-      setIsFetching(false);
+      setIsSubmitting(false);
       const res = processRes(resp.data);
       setResults(res);
 
@@ -105,43 +106,55 @@ function App() {
     const fetchAvailableProblem = async () => {
       const resp = await axios.get(`${endpoint}/problems`);
       setAvailableProblems(resp.data);
+      setIsFetchingProblems(false);
     };
     fetchAvailableProblem();
   }, []);
 
   return (
     <div className="App">
-      <FormControl className="selector">
-        <InputLabel id="demo-simple-select-label">Problem</InputLabel>
-        <Select value={selectedProblem} onChange={handleProblemChange}>
-          {Object.keys(availableProlems)
-            .sort((a, b) => Number(a.split("-")[1]) - Number(b.split("-")[1]))
-            .map((key, i) => (
-              <MenuItem key={i} value={key}>
-                {availableProlems[key].title}
+      {isFetchingProblems ? (
+        <LinearProgress className="selector-progress" />
+      ) : (
+        <>
+          <FormControl className="selector">
+            <InputLabel id="demo-simple-select-label">Problem</InputLabel>
+            <Select value={selectedProblem} onChange={handleProblemChange}>
+              {Object.keys(availableProlems)
+                .sort(
+                  (a, b) => Number(a.split("-")[1]) - Number(b.split("-")[1])
+                )
+                .map((key, i) => (
+                  <MenuItem key={i} value={key}>
+                    {availableProlems[key].title}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+          <FormControl className="selector">
+            <InputLabel id="demo-simple-select-helper-label">
+              Language
+            </InputLabel>
+            <Select
+              disabled={!selectedProblem}
+              value={selectedLanguage}
+              onChange={handleLanguageChange}
+            >
+              <MenuItem value="python">Python</MenuItem>
+              <MenuItem value="cpp" disabled>
+                C++
               </MenuItem>
-            ))}
-        </Select>
-      </FormControl>
-      <FormControl className="selector">
-        <InputLabel id="demo-simple-select-helper-label">Language</InputLabel>
-        <Select
-          disabled={!selectedProblem}
-          value={selectedLanguage}
-          onChange={handleLanguageChange}
-        >
-          <MenuItem value="python">Python</MenuItem>
-          <MenuItem value="cpp" disabled>
-            C++
-          </MenuItem>
-          <MenuItem value="java" disabled>
-            Java
-          </MenuItem>
-          <MenuItem value="javascript" disabled>
-            JavaScript
-          </MenuItem>
-        </Select>
-      </FormControl>
+              <MenuItem value="java" disabled>
+                Java
+              </MenuItem>
+              <MenuItem value="javascript" disabled>
+                JavaScript
+              </MenuItem>
+            </Select>
+          </FormControl>
+        </>
+      )}
+
       <Editor
         width="700px"
         height="600px"
@@ -160,7 +173,7 @@ function App() {
           Submit
         </Button>
       </div>
-      {isFetching && <LinearProgress />}
+      {isSubmitting && <LinearProgress />}
       <ResultDisplay results={results} pass={pass} total={total} />
     </div>
   );
